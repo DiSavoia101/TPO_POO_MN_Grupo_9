@@ -31,13 +31,13 @@ Personaje:
 
 Clases:
  Guerrero
-  Atacar  
+  Atacar
   Ataque Pesado
   Corte profundo
   Gritar
  Mago
   Bola de fuego
-  Lanzallama
+  Lanzallamas
   Dragón
   Muro de llamas 
 (bloquea por un turno el ataque del enemigo)
@@ -65,7 +65,7 @@ Enemigos:
  Dibu: Arquero
  El Profe: Las 4
 
-Areas:
+Áreas:
  Tiendas
   Armas W
   Armaduras P

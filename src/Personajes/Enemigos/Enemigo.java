@@ -1,12 +1,12 @@
 package Personajes.Enemigos;
 
+import Personajes.Clases.Arquero;
 import Personajes.Personaje;
 
 public class Enemigo extends Personaje {
+    protected Arquero clase;
 
-
-
-    public Enemigo(int saludPj, int pntosAtaquePj, int pntosDefenzaPj, int esquivaPj, int nivelPj, Personaje clasePj) {
-        super(saludPj, pntosAtaquePj, pntosDefenzaPj, esquivaPj, nivelPj);
+    public Enemigo(Arquero clasePj) {
+        this.clase = clasePj;
     }
 }

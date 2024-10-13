@@ -4,22 +4,21 @@ import Personajes.Personaje;
 
 public class Arquero extends Personaje {
     public Arquero() {
-        super(60, 30, 10, 55);
+        super(60, 900, 10, 55);
     }
 
-    public int flechazo(){
-        return 0;
+    public int hab1(){
+        return this.pntosAtaque + 10;
     }
-    public int flechaVeneno(){
+    public int hab2(){
         return 1;
     }
 
-    public int lluviaDeFlechas(){
+    public int hab3(){
         return 2;
-
     }
 
-    public int Evasion(){
+    public int hab4(){
         return 3;
     }
 
