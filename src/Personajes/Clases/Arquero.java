@@ -4,7 +4,7 @@ import Personajes.Personaje;
 
 public class Arquero extends Personaje {
     public Arquero() {
-        super(60, 900, 10, 55);
+        super(60, 25, 10, 55);
     }
 
     public int hab1(){

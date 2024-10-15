@@ -8,7 +8,7 @@ public class Escudero extends Personaje {
     }
 
     public int Atacar(){
-        return 0;
+        return this.pntosAtaque;
     }
 
     public int Empujar(){
