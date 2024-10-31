@@ -4,7 +4,7 @@ import Personajes.Personaje;
 
 public class Mago extends Personaje {
     public Mago() {
-        super(50, 40, 5, 20);
+//        super(50, 40, 5, 20);
     }
 
     public int BolaFuego(){

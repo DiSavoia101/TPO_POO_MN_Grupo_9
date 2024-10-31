@@ -4,7 +4,7 @@ import Personajes.Personaje;
 
 public class Guerrero extends Personaje {
     public Guerrero(){
-        super(100,20,20,10);
+//        super(100,20,20,10);
     }
 
     public int Atacar(){

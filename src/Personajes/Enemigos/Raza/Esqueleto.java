@@ -8,9 +8,6 @@ public class Esqueleto {
 
     public Esqueleto(Guerrero tipo){this.clase = tipo;}
 
-    public int atacar(){
-        return clase.atacar();
-    }
 
     public int mostrarVida(){
         return clase.mostrarVida();

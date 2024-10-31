@@ -4,11 +4,11 @@ import Personajes.Personaje;
 
 public class Arquero extends Personaje {
     public Arquero() {
-        super(60, 25, 10, 55);
+
     }
 
     public int hab1(){
-        return this.pntosAtaque + 10;
+        return 0;
     }
     public int hab2(){
         return 1;

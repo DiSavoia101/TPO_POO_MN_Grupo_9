@@ -2,17 +2,19 @@ package Personajes.Clases;
 
 import Personajes.Personaje;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Escudero extends Personaje {
     public Escudero() {
-        super(120, 10, 40, 5);
+//        super(120, 10, 40, 5);
     }
 
-    public int Atacar(){
-        return this.pntosAtaque;
-    }
-
-    public int Empujar(){
-        return 1;
+    public List<Integer> Empujar(){
+        List<Integer> estados = new ArrayList<>(2);
+        estados.add(1);
+        estados.add(1);
+        return estados;
     }
 
     public int Fortalecer(){
