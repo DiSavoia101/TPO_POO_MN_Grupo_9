@@ -17,11 +17,9 @@ public class Controlador extends JFrame implements KeyListener {
         this.mapa.crearMundo();
     }
     public void iniciarJuego(){
-        Personaje jugador = new Personaje("Arquero", 60, 10, 55,5);
+        Personaje jugador = new Personaje("Carlos","Arquero", 60, 10, 55,5);
+        this.mapa.genMalulazos();
         this.mapa.generarJugador(jugador);
-        Personaje bandido = new Personaje("Bandido", 30,10,20,3);
-        this.mapa.genMalulazos(bandido);
-
         this.mapa.mostrarMundo();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -66,25 +64,4 @@ public class Controlador extends JFrame implements KeyListener {
 
     }
 
-
-    public void mover(){
-        JTextField textField = new JTextField(20);
-
-//        boolean es = false;
-//        int dir = 0;
-//        do {
-//            String ingreso = input.next();
-//            for (int i = 0; i < 4; i++) {
-//                if (moveKeys.get(i).equals(ingreso)) {
-//                    es = true;
-//                    dir = i;
-//                    break;
-//                }
-//            }
-//        } while (!es);
-//        mapa.moverPersonaje(dir);
-//        System.out.flush();
-//        mapa.mostrarMundo();
-//        mover();
-    }
 }

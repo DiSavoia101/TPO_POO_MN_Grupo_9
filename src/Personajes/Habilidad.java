@@ -14,8 +14,15 @@ public class Habilidad {
     public String getNombre(){
         return this.nombre;
     }
+
     public int getDanio(){
         return this.danio;
     }
 
+    public void setDanio(int danio){
+        this.danio = danio;
+    }
+    public String getEfecto(){
+        return this.efecto;
+    }
 }

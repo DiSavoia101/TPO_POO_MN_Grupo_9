@@ -1,9 +1,7 @@
 package Mapa;
 
-import Personajes.Clases.Arquero;
 import Personajes.Personaje;
 
-import java.lang.reflect.Array;
 import java.util.Random;
 
 
@@ -93,12 +91,13 @@ public class Mundo {
         this.existePersonaje = true;
     }
 
-    public void genMalulazos(Personaje malulo){
+    public void genMalulazos(){
         Random randomNumbers = new Random();
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(nuevo != "A") {
+                    Personaje malulo = new Personaje("Bandido", 30,8,20,4);
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
@@ -113,24 +112,26 @@ public class Mundo {
 
     public void mostrarMundo(){
         String ANSI_RESET = "\u001B[0m";
-        for (int i = 0; i < this.y; i++) {
-            System.out.println("");
-            for (int j = 0; j < this.x; j++) {
-                switch(matriz[i][j].getNombre() ){
-                    case "A":
-                        System.out.print("\u001B[44m" + " "+ANSI_RESET);
-                        break;
-                    case "T":
-                        System.out.print("\u001B[42m" + " " + ANSI_RESET);
-                        break;
-                    case "TP":
-                        System.out.print("\u001B[42m" + "\u001B[30m" + "O" + ANSI_RESET);
-                        break;
-                    case "MT":
-                        System.out.print("\u001B[42m" + "\u001B[30m" + "B" + ANSI_RESET);
-                        break;
+        if(existePersonaje) {
+            for (int i = 0; i < this.y; i++) {
+                System.out.println("");
+                for (int j = 0; j < this.x; j++) {
+                    switch (matriz[i][j].getNombre()) {
+                        case "A":
+                            System.out.print("\u001B[44m" + " " + ANSI_RESET);
+                            break;
+                        case "T":
+                            System.out.print("\u001B[42m" + " " + ANSI_RESET);
+                            break;
+                        case "TP":
+                            System.out.print("\u001B[42m" + "\u001B[30m" + "O" + ANSI_RESET);
+                            break;
+                        case "MT":
+                            System.out.print("\u001B[42m" + "\u001B[30m" + "B" + ANSI_RESET);
+                            break;
 
-                    default:
+                        default:
+                    }
                 }
             }
         }
@@ -149,6 +150,11 @@ public class Mundo {
 
                     }else if(matriz[jY-1][jX].getNombre().equals("MT")){
                         jugador.pelear(this.matriz[jY-1][jX].getPersonaje());
+                        if (!this.matriz[jY-1][jX].getPersonaje().isAlive()){
+                            matriz[jY][jX].setNombre("T");
+                            matriz[jY-1][jX].setNombre("TP");
+                            this.jY -= 1;
+                        }
                     }
                     break;
                 case 1: // A
@@ -158,6 +164,11 @@ public class Mundo {
                         this.jX -= 1;
                     }else if(matriz[jY][jX-1].getNombre().equals("MT")){
                         jugador.pelear(this.matriz[jY][jX-1].getPersonaje());
+                        if (!this.matriz[jY][jX-1].getPersonaje().isAlive()){
+                            matriz[jY][jX].setNombre("T");
+                            matriz[jY][jX-1].setNombre("TP");
+                            this.jX -= 1;
+                        }
                     }
                     break;
                 case 2: // S
@@ -167,6 +178,11 @@ public class Mundo {
                         this.jY += 1;
                     }else if(matriz[jY+1][jX].getNombre().equals("MT")){
                         jugador.pelear(this.matriz[jY+1][jX].getPersonaje());
+                        if (!this.matriz[jY+1][jX].getPersonaje().isAlive()){
+                            matriz[jY][jX].setNombre("T");
+                            matriz[jY+1][jX].setNombre("TP");
+                            this.jY += 1;
+                        }
                     }
                     break;
                 case 3: // D
@@ -176,12 +192,20 @@ public class Mundo {
                         this.jX += 1;
                     }else if(matriz[jY][jX+1].getNombre().equals("MT")){
                         jugador.pelear(this.matriz[jY][jX+1].getPersonaje());
-
+                        if (!this.matriz[jY][jX+1].getPersonaje().isAlive()){
+                            matriz[jY][jX].setNombre("T");
+                            matriz[jY][jX+1].setNombre("TP");
+                            this.jX += 1;
+                        }
                     }
                     break;
                 default:
             }
             matriz[jY][jX].setPersonaje(jugador);
+            if(!matriz[jY][jX].getPersonaje().isAlive()){
+                existePersonaje = false;
+                System.out.println("te moriste");
+            }
 
         }
     }
