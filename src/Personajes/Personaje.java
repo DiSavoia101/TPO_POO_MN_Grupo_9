@@ -17,7 +17,7 @@ public class Personaje {
     protected int esquiva;
     protected int pntosDefenza;
     protected Personaje rival;
-    protected ArrayList<Habilidades> habilidades;
+    protected ArrayList<Habilidad> habilidades;
     Scanner lector = new Scanner(System.in);
 
 
@@ -27,7 +27,7 @@ public class Personaje {
         this.esquiva = esquivaPj;
 
         this.pntosDefenza = pntosDefenzaPj;
-        this.habilidades = new ArrayList<Habilidades>();
+        this.habilidades = new ArrayList<Habilidad>();
         genHabilidades();
     }
 
@@ -37,13 +37,13 @@ public class Personaje {
         this.esquiva = esquivaPj;
         this.pntosDefenza = pntosDefenzaPj;
         this.nivel = nivelPj;
-        this.habilidades = new ArrayList<Habilidades>();
+        this.habilidades = new ArrayList<Habilidad>();
         genHabilidades();
     }
     public Personaje(){}
 
 
-    public void recibirDanio(Habilidades hab){
+    public void recibirDanio(Habilidad hab){
         //logica de tu defensa
         int danio = hab.getDanio();
         if (danio > this.pntosDefenza){
@@ -124,11 +124,11 @@ public class Personaje {
 
     }
     public void genHabilidades() {
-        Habilidades hab2 = null;
-        Habilidades hab1 = null;
+        Habilidad hab2 = null;
+        Habilidad hab1 = null;
         if (this.nombre == "Arquero") {
-            hab1 = new Habilidades("Flechazo", 10, " ");
-            hab2 = new Habilidades("Flecha Veneno", 3, "Veneno");
+            hab1 = new Habilidad("Flechazo", 10, " ");
+            hab2 = new Habilidad("Flecha Veneno", 3, "Veneno");
 
         }
         this.habilidades.add(hab1);
