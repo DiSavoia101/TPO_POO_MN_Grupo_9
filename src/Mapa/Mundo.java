@@ -19,7 +19,6 @@ public class Mundo {
         this.matriz = new Celda[y][x];
         this.x = x;
         this.y = y;
-
     }
 
     public void crearMundo(){
@@ -34,13 +33,10 @@ public class Mundo {
                         break;
                     default:
                         this.matriz[i][j] = new Celda("T");
-
                 }
             }
         }
-
         fixeoDeMundo();
-
     }
 
     public void fixeoDeMundo(){
@@ -84,8 +80,6 @@ public class Mundo {
                     this.matriz[i][j].setNombre("T");
                 }
             }
-
-
         }
         fixeoDeMundo();
         this.existePersonaje = true;
@@ -105,7 +99,6 @@ public class Mundo {
 
                     }
                 }
-
             }
         }
     }
@@ -129,7 +122,6 @@ public class Mundo {
                         case "MT":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "B" + ANSI_RESET);
                             break;
-
                         default:
                     }
                 }
@@ -143,60 +135,23 @@ public class Mundo {
             matriz[jY][jX].setPersonaje(null);
             switch (dir){
                 case 0: // W
-                    if (matriz[jY-1][jX].getNombre().equals("T")) {
-                        matriz[jY][jX].setNombre("T");
-                        matriz[jY-1][jX].setNombre("TP");
+                    if (moverPersonajeAux(this.jY-1,this.jX, this.jY, this.jX,jugador)){
                         this.jY -= 1;
-
-                    }else if(matriz[jY-1][jX].getNombre().equals("MT")){
-                        jugador.pelear(this.matriz[jY-1][jX].getPersonaje());
-                        if (!this.matriz[jY-1][jX].getPersonaje().isAlive()){
-                            matriz[jY][jX].setNombre("T");
-                            matriz[jY-1][jX].setNombre("TP");
-                            this.jY -= 1;
-                        }
                     }
                     break;
                 case 1: // A
-                    if (matriz[jY][jX-1].getNombre().equals("T")) {
-                        matriz[jY][jX].setNombre("T");
-                        matriz[jY][jX-1].setNombre("TP");
+                    if (moverPersonajeAux(this.jY,this.jX-1, this.jY, this.jX,jugador)){
                         this.jX -= 1;
-                    }else if(matriz[jY][jX-1].getNombre().equals("MT")){
-                        jugador.pelear(this.matriz[jY][jX-1].getPersonaje());
-                        if (!this.matriz[jY][jX-1].getPersonaje().isAlive()){
-                            matriz[jY][jX].setNombre("T");
-                            matriz[jY][jX-1].setNombre("TP");
-                            this.jX -= 1;
-                        }
                     }
                     break;
                 case 2: // S
-                    if (matriz[jY+1][jX].getNombre().equals("T")) {
-                        matriz[jY][jX].setNombre("T");
-                        matriz[jY+1][jX].setNombre("TP");
+                    if (moverPersonajeAux(this.jY+1,this.jX, this.jY, this.jX,jugador)){
                         this.jY += 1;
-                    }else if(matriz[jY+1][jX].getNombre().equals("MT")){
-                        jugador.pelear(this.matriz[jY+1][jX].getPersonaje());
-                        if (!this.matriz[jY+1][jX].getPersonaje().isAlive()){
-                            matriz[jY][jX].setNombre("T");
-                            matriz[jY+1][jX].setNombre("TP");
-                            this.jY += 1;
-                        }
                     }
                     break;
                 case 3: // D
-                    if (matriz[jY][jX+1].getNombre().equals("T")) {
-                        matriz[jY][jX].setNombre("T");
-                        matriz[jY][jX+1].setNombre("TP");
+                    if (moverPersonajeAux(this.jY,this.jX+1, this.jY, this.jX,jugador)){
                         this.jX += 1;
-                    }else if(matriz[jY][jX+1].getNombre().equals("MT")){
-                        jugador.pelear(this.matriz[jY][jX+1].getPersonaje());
-                        if (!this.matriz[jY][jX+1].getPersonaje().isAlive()){
-                            matriz[jY][jX].setNombre("T");
-                            matriz[jY][jX+1].setNombre("TP");
-                            this.jX += 1;
-                        }
                     }
                     break;
                 default:
@@ -206,7 +161,24 @@ public class Mundo {
                 existePersonaje = false;
                 System.out.println("te moriste");
             }
-
         }
+    }
+
+    private boolean moverPersonajeAux(int columnaNueva, int filaNueva, int columnaVieja, int filaVieja, Personaje jugador){
+        boolean huboMovimiento = false;
+        if (matriz[columnaNueva][filaNueva].getNombre().equals("T")) {
+            matriz[columnaVieja][filaVieja].setNombre("T");
+            matriz[columnaNueva][filaNueva].setNombre("TP");
+            huboMovimiento = true;
+
+        }else if(matriz[columnaNueva][filaNueva].getNombre().equals("MT")){
+            jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
+            if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()){
+                matriz[columnaVieja][filaVieja].setNombre("T");
+                matriz[columnaNueva][filaNueva].setNombre("TP");
+                huboMovimiento = true;
+            }
+        }
+        return huboMovimiento;
     }
 }

@@ -11,7 +11,6 @@ public class Controlador extends JFrame implements KeyListener {
     Mundo mapa;
     JFrame frame = new JFrame("Captura instantánea");
 
-
     public Controlador(){
         this.mapa = new Mundo(100,20);
         this.mapa.crearMundo();
@@ -24,17 +23,10 @@ public class Controlador extends JFrame implements KeyListener {
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         addKeyListener(this);
-
         setVisible(true);
     }
-
-
-
-
-
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
@@ -54,14 +46,9 @@ public class Controlador extends JFrame implements KeyListener {
                 mapa.moverPersonaje(3);
                 break;
         }
-
         mapa.mostrarMundo();
-
    }
-
     @Override
     public void keyReleased(KeyEvent e) {
-
     }
-
 }

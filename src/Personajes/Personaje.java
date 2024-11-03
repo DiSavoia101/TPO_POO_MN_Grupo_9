@@ -1,7 +1,6 @@
 package Personajes;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -115,6 +114,7 @@ public class Personaje {
 
                 break;
             case "2":
+                // TODO
                 System.out.println("más sarasa");
 
                 break;
