@@ -17,8 +17,9 @@ public class Controlador extends JFrame implements KeyListener {
     }
     public void iniciarJuego(){
         Personaje jugador = new Personaje("Carlos","Arquero", 60, 10, 55,5);
-        this.mapa.genMalulazos(jugador.getNivel());
         this.mapa.generarJugador(jugador);
+        this.mapa.genMalulazos(jugador.getNivel());
+        this.mapa.genTiendaDePrueba();
         this.mapa.mostrarMundo();
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,10 +1,12 @@
 package Mapa;
 
+import Estructuras.Tienda;
 import Personajes.Personaje;
 
 public class Celda {
     private String nombre;
     private Personaje personaje;
+    private Tienda tienda;
 
     public Celda(String nombre) {
         this.nombre = nombre;
@@ -24,5 +26,11 @@ public class Celda {
     }
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    public Tienda getTienda() {
+        return tienda;
+    }
+    public void setTienda(Tienda tienda) {
+        this.tienda = tienda;
     }
 }

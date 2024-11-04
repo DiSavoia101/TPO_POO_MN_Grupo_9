@@ -1,5 +1,6 @@
 package Mapa;
 
+import Estructuras.Tienda;
 import Personajes.Personaje;
 
 import java.util.Random;
@@ -90,8 +91,8 @@ public class Mundo {
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
-                if(nuevo != "A") {
-                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-2, nivelJugador+2);
+                if(nuevo != "A" && (this.matriz[i][j].getPersonaje() == null)) {
+                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-3, nivelJugador+2);
                     Personaje malulo = new Personaje("Bandido", 30,8,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
@@ -122,7 +123,9 @@ public class Mundo {
                             break;
                         case "MT":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "B" + ANSI_RESET);
-                            break;
+                            break ;
+                        case "K":
+                            System.out.print("\u001B[42m" + "\u001B[30m" + "T" + ANSI_RESET);
                         default:
                     }
                 }
@@ -180,7 +183,20 @@ public class Mundo {
                 huboMovimiento = true;
                 jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
             }
+        }else if(matriz[columnaNueva][filaNueva].getNombre().equals("K")){
+            matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
+
         }
+
         return huboMovimiento;
     }
+
+    public void genTiendaDePrueba(){
+        Tienda tienda = new Tienda();
+        this.matriz[jY][jX+3].setPersonaje(null);
+        this.matriz[jY][jX+3].setTienda(tienda);
+        this.matriz[jY][jX+3].setNombre("K");
+
+    }
+
 }
