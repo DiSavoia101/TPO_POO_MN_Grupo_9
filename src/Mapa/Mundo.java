@@ -85,13 +85,14 @@ public class Mundo {
         this.existePersonaje = true;
     }
 
-    public void genMalulazos(){
+    public void genMalulazos(int nivelJugador){
         Random randomNumbers = new Random();
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(nuevo != "A") {
-                    Personaje malulo = new Personaje("Bandido", 30,8,20,4);
+                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-2, nivelJugador+2);
+                    Personaje malulo = new Personaje("Bandido", 30,8,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
@@ -159,7 +160,7 @@ public class Mundo {
             matriz[jY][jX].setPersonaje(jugador);
             if(!matriz[jY][jX].getPersonaje().isAlive()){
                 existePersonaje = false;
-                System.out.println("te moriste");
+                System.out.println("FIN DEL JUEGO");
             }
         }
     }
@@ -177,6 +178,7 @@ public class Mundo {
                 matriz[columnaVieja][filaVieja].setNombre("T");
                 matriz[columnaNueva][filaNueva].setNombre("TP");
                 huboMovimiento = true;
+                jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
             }
         }
         return huboMovimiento;
