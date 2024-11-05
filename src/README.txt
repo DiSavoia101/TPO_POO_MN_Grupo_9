@@ -30,11 +30,13 @@ Personaje:
  ptosAtaque
 
 Clases:
+
  Guerrero
   Atacar
   Ataque Pesado
   Corte profundo
   Gritar
+
  Mago
   Bola de fuego
   Lanzallamas

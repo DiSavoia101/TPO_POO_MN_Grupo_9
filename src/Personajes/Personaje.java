@@ -202,26 +202,52 @@ public class Personaje {
     }
 
     public void genHabilidades() {
-        Habilidad hab2 = null;
         Habilidad hab1 = null;
+        Habilidad hab2 = null;
+        Habilidad hab3 = null;
+        Habilidad hab4 = null;
+
         if(this.nombre == "Bandido"){
             Random randomNumbers = new Random();
             int claseRand = randomNumbers.nextInt(3)+1;
             switch (claseRand){
                 case 1:
                     this.clase = "Arquero";
+                case 2:
+                    this.clase = "Escudero";
+                case 3:
+                    this.clase = "Mago";
+                case 4:
+                    this.clase = "Guerrero";
                 default:
-                    this.clase  = "Arquero";
             }
 
         }
         if (this.clase == "Arquero") {
             hab1 = new Habilidad("Flechazo", 10, null);
             hab2 = new Habilidad("Flecha Veneno", 3, "Envenenad@");
-
+            hab3 = new Habilidad("Lluvia de flechas", 3, null);
+            hab4 = new Habilidad("Evasion", 0, "Evasion");
+        } else if (this.clase == "Escudero") {
+            hab1 = new Habilidad("Atacar", 5, null);
+            hab2 = new Habilidad("Empujar", 2, "Desplazado");
+            hab3 = new Habilidad("Fortalecer", 0, "Fortalecido");
+            hab4 = new Habilidad("Bloquear", 0 , "Bloqueado");
+        } else if (this.clase == "Mago") {
+            hab1 = new Habilidad("Bola de fuego", 5, "Inmolacion");
+            hab2 = new Habilidad("Lanzallamas", 10, "Inmolacion");
+            hab3 = new Habilidad("Dragon", 15, "Inmolacion");
+            hab4 = new Habilidad("Muro de llamas", 0, "Bloqueado");
+        } else if (this.clase == "Guerrero") {
+            hab1 = new Habilidad("Ataque", 5, null);
+            hab2 = new Habilidad("Ataque pesado", 10, null);
+            hab3 = new Habilidad("Corte profundo", 15, "Sangrado");
+            hab4 = new Habilidad("Gritar", 0, "Debilitacion");
         }
         this.habilidades.add(hab1);
         this.habilidades.add(hab2);
+        this.habilidades.add(hab3);
+        this.habilidades.add(hab4);
     }
 
     public void recibirExp(int nivelEnemigo){
