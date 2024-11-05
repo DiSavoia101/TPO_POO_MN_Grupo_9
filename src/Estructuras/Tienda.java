@@ -5,26 +5,29 @@ import Objetos.Objeto;
 import Objetos.Pocion;
 import Personajes.Personaje;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+
+import static java.lang.Integer.parseInt;
 
 
 public class Tienda {
     protected String nombre;
-    protected HashSet<Objeto> objetos;
+    protected ArrayList<Objeto> objetos;
     protected Personaje cliente;
     Scanner lector = new Scanner(System.in);
 
     public Tienda() {
         this.nombre = "Tienda DonJuan";
-        this.objetos = new HashSet<>();
+        this.objetos = new ArrayList<>();
         generarObjetos();
     }
 
     public void generarObjetos() {
-        Objeto pocion15 = new Pocion(10,"Pocion pequeña",15);
-        Objeto pocion30 = new Pocion(20,"Pocion mediana",30);
-        Objeto armadura = new Armadura(35,"Pechera de cobre",20);
+        Objeto pocion15 = new Pocion(10,"Pocion pequeña","Cura 15 puntos de vida", 15);
+        Objeto pocion30 = new Pocion(20,"Pocion mediana","Cura 30 puntos de vida", 30);
+        Objeto armadura = new Armadura(35,"Pechera de cobre",20, "Aumenta 20 puntos de defenza");
         objetos.add(pocion15);
         objetos.add(pocion30);
         objetos.add(armadura);
@@ -35,43 +38,42 @@ public class Tienda {
             System.out.println("\n");
         }
         this.cliente = cliente;
-        System.out.println(this.nombre);
-        System.out.println("Escribe el nombre del objeto para comprar(ingresa adios para salir) ");
-        System.out.println("Precio | Objetos");
-        for (Objeto objeto : objetos){
-            System.out.println(objeto.mostrarEnTienda());
+        System.out.println("——————————————————————————————————————————————————————————");
+        System.out.printf("¡Bienvenido a %s!\n", this.nombre);
+        System.out.println("¡Escribe el número del objeto que quieras comprar!");
+        System.out.println("——————————————————————————————————————————————————————————");
+        System.out.printf("%-3s | %-20s | %-6s | %-20s\n", "N°", "Nombre", "Precio", "Información");
+        System.out.println("——————————————————————————————————————————————————————————");
+        for (int i = 0; i < objetos.size(); i++){
+            System.out.printf("%-3s | %-20s | %-6s | %-20s\n", i+1, objetos.get(i).getNombre(), objetos.get(i).getValor(), objetos.get(i).getDescripcion());
         }
+        System.out.printf("%-3s | Salir de la tienda\n", objetos.size()+1);
+        System.out.println("——————————————————————————————————————————————————————————");
         System.out.println("Tus monedas: "+ cliente.getMonedas());
+        System.out.println("¿Que objeto te gustaría comprar?");
         comprar();
         this.cliente = null;
     }
 
     public void comprar(){
-
         Objeto venta = null;
         boolean aux = false;
         String opcion = this.lector.nextLine();
-        while(!opcion.equals("adios")){
-            for (Objeto objeto : objetos) {
-                if (objeto.getNombre().equals(opcion)) {
-                    aux = true;
-                    if (cliente.getMonedas() >= objeto.getValor()) {
-
-                        venta = objeto;
-                        cliente.RestarMonedas(objeto.getValor());
-                        cliente.agregarAlInventario(venta);
-                        System.out.println("Algo mas?");
-                    } else {
-                        System.out.println("No tenes monedas suficientes");
-                    }
-                    break;
-                }
+        if (parseInt(opcion)-1 < objetos.size()){
+            venta = objetos.get(parseInt(opcion)-1);
+            if (cliente.getMonedas() >= venta.getValor()) {
+                cliente.RestarMonedas(venta.getValor());
+                cliente.agregarAlInventario(venta);
+                this.objetos.remove(venta);
+                System.out.printf("¡Has adquirido %s por %s monedas exitosamente!", venta.getNombre(), venta.getValor());
             }
-            if (!aux){
-                System.out.println("No tengo ese objeto");
+            else {
+                System.out.println("No tienes monedas suficientes");
             }
-            opcion = this.lector.nextLine();
+            mostrarObjetos(cliente);
+        }
+        if (parseInt(opcion)-1 == objetos.size()){
+            System.out.println("Hasta luego, vuelva pronto");
         }
     }
-
 }

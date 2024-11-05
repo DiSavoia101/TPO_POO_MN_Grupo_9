@@ -15,3 +15,13 @@ S
 src/Main.java,9\2\924f089edb4af5ee45c8a9d1129cd28e2b368138
 M
 src/Personajes/Habilidad.java,6\7\67c5466fca6f6b99eacdea2363d0670e67be8860
+>
+src/README.txt,2\2\22057da97759a9e1ffb6b143fbc60856e9906161
+K
+src/Estructuras/Tienda.java,1\1\110373ce2e7a9b937610b3f40aa160140a6f649a
+G
+src/Objetos/Objeto.java,e\7\e7d48caba10df81bbef98e8d7f596d26d5d1f2b2
+G
+src/Objetos/Pocion.java,8\a\8a43bf92863fffcdc5c3fbf5759f046d54691621
+I
+src/Objetos/Armadura.java,c\8\c824ebf79d19f39599a798777fe47bfa2aa38b4c

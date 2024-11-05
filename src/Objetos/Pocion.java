@@ -6,9 +6,9 @@ public class Pocion extends Objeto {
 
     protected int curacion;
 
-    public Pocion(int valor,String nombre, int curacion) {
+    public Pocion(int valor,String nombre, String descripcion, int curacion) {
 
-        super(valor, nombre);
+        super(valor, nombre, descripcion);
         this.curacion = curacion;
     }
 

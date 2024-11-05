@@ -6,8 +6,8 @@ public class Armadura extends Objeto{
 
     protected int defensa;
 
-    public Armadura(int valor,String nombre, int defensa) {
-        super(valor, nombre);
+    public Armadura(int valor,String nombre, int defensa, String descripcion) {
+        super(valor, nombre, descripcion);
         this.defensa = defensa;
     }
 
