@@ -170,24 +170,27 @@ public class Mundo {
 
     private boolean moverPersonajeAux(int columnaNueva, int filaNueva, int columnaVieja, int filaVieja, Personaje jugador){
         boolean huboMovimiento = false;
-        if (matriz[columnaNueva][filaNueva].getNombre().equals("T")) {
-            matriz[columnaVieja][filaVieja].setNombre("T");
-            matriz[columnaNueva][filaNueva].setNombre("TP");
-            huboMovimiento = true;
-
-        }else if(matriz[columnaNueva][filaNueva].getNombre().equals("MT")){
-            jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
-            if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()){
+        System.out.println(columnaNueva);
+        System.out.println(filaNueva);
+        if (!(columnaNueva == y || filaNueva == x || columnaNueva == -1 || filaNueva == -1)){
+            if (matriz[columnaNueva][filaNueva].getNombre().equals("T")) {
                 matriz[columnaVieja][filaVieja].setNombre("T");
                 matriz[columnaNueva][filaNueva].setNombre("TP");
                 huboMovimiento = true;
-                jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
+
+            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("MT")) {
+                jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
+                if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()) {
+                    matriz[columnaVieja][filaVieja].setNombre("T");
+                    matriz[columnaNueva][filaNueva].setNombre("TP");
+                    huboMovimiento = true;
+                    jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
+                }
+            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("K")) {
+                matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
+
             }
-        }else if(matriz[columnaNueva][filaNueva].getNombre().equals("K")){
-            matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
-
         }
-
         return huboMovimiento;
     }
 

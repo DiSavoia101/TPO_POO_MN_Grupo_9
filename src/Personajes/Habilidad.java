@@ -11,6 +11,7 @@ public class Habilidad {
         this.danio = danio;
         this.efecto = efecto;
     }
+
     public String getNombre(){
         return this.nombre;
     }
@@ -22,6 +23,7 @@ public class Habilidad {
     public void setDanio(int danio){
         this.danio = danio;
     }
+
     public String getEfecto(){
         return this.efecto;
     }

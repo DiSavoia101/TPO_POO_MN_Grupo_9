@@ -301,6 +301,7 @@ public class Personaje {
     public void agregarAlInventario(Objeto compra){
         this.inventario.add(compra);
     }
+
     public void curar(int cura){
         this.salud += cura;
     }
@@ -308,11 +309,14 @@ public class Personaje {
     public void RestarMonedas(int resta){
         this.monedas -= resta;
     }
+
     public int getSalud(){
         return this.salud;
 
     }
+
     public int getSaludMaxima(){
         return this.saludMaxima;
     }
+
 }

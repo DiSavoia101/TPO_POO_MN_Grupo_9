@@ -17,10 +17,10 @@ public abstract class Objeto {
 
     public abstract void usar(Personaje personaje);
 
-
     public String getNombre(){
         return nombre;
     }
+
     public int getValor(){
         return valor;
     }

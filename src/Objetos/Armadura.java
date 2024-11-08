@@ -18,6 +18,7 @@ public class Armadura extends Objeto{
     public int getDefensa() {
         return defensa;
     }
+
     public String mostrarEnTienda(){
         return (valor +"     | "+ nombre + " +" + defensa + " de defensa");
     }
