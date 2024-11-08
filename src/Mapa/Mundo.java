@@ -93,7 +93,7 @@ public class Mundo {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(nuevo != "A" && (this.matriz[i][j].getPersonaje() == null)) {
                     int nivelEnemigo = randomNumbers.nextInt(nivelJugador-3, nivelJugador+2);
-                    Personaje malulo = new Personaje("Bandido", 30,8,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
+                    Personaje malulo = new Personaje("Bandido", 30,2,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
