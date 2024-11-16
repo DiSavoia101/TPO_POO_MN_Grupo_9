@@ -13,10 +13,10 @@ public class Personaje {
     protected String nombre;
     protected String clase;
     protected String estado = " ";
+    protected int duracionEfecto;
     protected int salud;
     protected int saludMaxima;
     protected int experiencia;
-    protected int dinero;
     protected int nivel;
     protected int expMAX;
     protected int esquiva;
@@ -65,41 +65,48 @@ public class Personaje {
         }
     }
     public void genHabProfe(){
-        Habilidad hab1 = new Habilidad("Poner 2", 30, null);
+        Habilidad hab1 = new Habilidad("Poner 2", 30, "");
         Habilidad hab2 = new Habilidad("Poner 3.59", 400000000, "Depresion");
-        Habilidad hab3 = new Habilidad("Sancionado", 100, null);
-        Habilidad hab4 = new Habilidad("Trompada", 49, null);
+        Habilidad hab3 = new Habilidad("Sancionado", 100, "");
+        Habilidad hab4 = new Habilidad("Trompada", 49, "");
 
         this.habilidades.add(hab1);
         this.habilidades.add(hab2);
         this.habilidades.add(hab3);
         this.habilidades.add(hab4);
     }
-    public Personaje(){}
 
     public void recibirDanio(Habilidad hab){
         //logica de tu defensa
         if (hab != null){
             int danio = hab.getDanio();
             danio = (int) (danio*this.potenciador);
-            if (danio > this.pntosDefenza) {
+            if (danio > this.pntosDefenza) { // 5 def, 10 daño. salud - 5
                 salud -= danio - this.pntosDefenza;
                 System.out.printf("%s recibió %s de daño\n", this.getNombre(), (danio - this.pntosDefenza));
             }
-            if (Objects.equals(this.estado, " ")) {
-                if (hab.efecto != null) {
-                    this.estado = hab.getEfecto();
-                    System.out.printf("%s adquirió el estado: %s\n", this.getNombre(), hab.efecto);
+
+            if (hab.efecto.equals("Envenenad@") || hab.efecto.equals("En Llamas") || hab.efecto.equals("Sangrando") || this.duracionEfecto > 0){
+                if (this.duracionEfecto > 0){
+                    this.duracionEfecto -= 1;
                 }
-            } else {
-                salud -= 3;
-                System.out.printf("%s recibio 3 de daño por veneno\n", this.getNombre());
+                else {
+                    this.duracionEfecto = 3;
+                    System.out.printf("%s ha adquirido el estado '%s'\n", this.getNombre(), hab.efecto);
+                    this.estado = hab.efecto;
+                }
+                int danioEfecto = this.saludMaxima/10;
+                salud -= danioEfecto;
+                System.out.printf("%s recibió %s de daño por el estado '%s'\n", this.getNombre(), danioEfecto, this.estado);
             }
         }
         if (this.isAlive() && this.rival.isAlive()){
-            if (this.esEnemigo) {
+            if (this.esEnemigo && !( Objects.requireNonNull(hab).efecto.equals("Bloquead@")|| hab.efecto.equals("Evasion"))) {
                 habRandom();
             } else {
+                if (this.esEnemigo){
+                    System.out.printf("El ataque de %s se vio frustrado por el estado %s", this.nombre, hab.efecto);
+                }
                 menuPelea();
             }
         }
@@ -118,13 +125,6 @@ public class Personaje {
 
     }
 
-    public Personaje getRival(){
-        return this.rival;
-    }
-
-    public void setRival(Personaje malulo){
-        this.rival = malulo;
-    }
 
     public void pelear(Personaje malulo){
         this.rival = malulo;
@@ -146,7 +146,6 @@ public class Personaje {
         System.out.println("1 - Usar habilidad");
         System.out.println("2 - Usar objeto");
         System.out.println("——————————————————————————————");
-
 
         String opcion = this.lector.next();
         switch (opcion){
@@ -189,8 +188,6 @@ public class Personaje {
             System.out.println("Opción Incorrecta");
             mostrarHab();
         }
-
-
     }
 
     public void mostrarInventario(){
@@ -212,7 +209,6 @@ public class Personaje {
             System.out.println("Opción Incorrecta");
             mostrarInventario();
         }
-
     }
 
     public void nivelarPersonaje(){
@@ -220,20 +216,20 @@ public class Personaje {
             this.habilidades.add(habilidadesDeClase.getFirst());
             System.out.printf("¡%s ha conseguido la habilidad '%s'!", this.nombre, this.habilidadesDeClase.getFirst().getNombre());
         }
-        if (this.nivel == 8){
+        if (this.nivel == 4){
             this.habilidades.add(habilidadesDeClase.get(1));
             System.out.printf("¡%s ha conseguido la habilidad '%s'!", this.nombre, this.habilidadesDeClase.get(1).getNombre());
         }
-        if (this.nivel == 12){
+        if (this.nivel == 8){
             this.habilidades.add(habilidadesDeClase.get(2));
             System.out.printf("¡%s ha conseguido la habilidad '%s'!", this.nombre, this.habilidadesDeClase.get(2).getNombre());
         }
         this.saludMaxima = salud + (this.nivel*2);
         this.salud = this.saludMaxima;
         this.setPntosDefenza(this.getPntosDefenza() + this.nivel/2);
-        for(int i = 0; i < this.habilidades.size(); i++){
-            int danio = this.habilidades.get(i).getDanio();
-            this.habilidades.get(i).setDanio(danio + this.nivel/2);
+        for (Habilidad habilidad : this.habilidades) {
+            int danio = habilidad.getDanio();
+            habilidad.setDanio(danio + this.nivel / 2);
         }
     }
 
@@ -244,8 +240,7 @@ public class Personaje {
         Habilidad hab4 = null;
 
         if(this.esEnemigo){
-
-            int claseRand = randomNumbers.nextInt(3)+1;
+            int claseRand = randomNumbers.nextInt(4)+1;
             switch (claseRand){
                 case 1:
                     this.clase = "Arquero";
@@ -261,27 +256,26 @@ public class Personaje {
                     break;
                 default:
             }
-
         }
         if (Objects.equals(this.clase, "Arquero")) {
-            hab1 = new Habilidad("Flechazo", 8, null);
+            hab1 = new Habilidad("Flechazo", 8, "");
             hab2 = new Habilidad("Flecha Veneno", 6, "Envenenad@");
-            hab3 = new Habilidad("Lluvia de flechas", 12, null);
+            hab3 = new Habilidad("Lluvia de flechas", 12, "");
             hab4 = new Habilidad("Evasion", 0, "Evasion");
         } else if (Objects.equals(this.clase, "Escudero")) {
-            hab1 = new Habilidad("Atacar", 9, null);
+            hab1 = new Habilidad("Atacar", 9, "");
             hab2 = new Habilidad("Empujar", 5, "Aturdido");
             hab3 = new Habilidad("Fortalecer", 0, "Fortalecido");
             hab4 = new Habilidad("Bloquear", 0 , "Bloqueado");
         } else if (Objects.equals(this.clase, "Mago")) {
-            hab1 = new Habilidad("Bola de fuego", 7, "Quemadura");
-            hab2 = new Habilidad("Lanzallamas", 11, "Quemadura");
-            hab3 = new Habilidad("Dragon", 13, "Quemadura");
+            hab1 = new Habilidad("Bola de fuego", 7, "En llamas");
+            hab2 = new Habilidad("Lanzallamas", 11, "En llamas");
+            hab3 = new Habilidad("Dragon", 13, "En llamas");
             hab4 = new Habilidad("Muro de llamas", 0, "Bloqueado");
         } else if (Objects.equals(this.clase, "Guerrero")) {
-            hab1 = new Habilidad("Ataque", 8, null);
-            hab2 = new Habilidad("Ataque pesado", 11, null);
-            hab3 = new Habilidad("Corte profundo", 13, "Sangrado");
+            hab1 = new Habilidad("Ataque", 8, "");
+            hab2 = new Habilidad("Ataque pesado", 11, "");
+            hab3 = new Habilidad("Corte profundo", 13, "Sangrando");
             hab4 = new Habilidad("Gritar", 0, "Debilidad");
         }
         this.habilidades.add(hab1);
@@ -302,7 +296,7 @@ public class Personaje {
             System.out.printf("¡%s ha subido a nivel %s!\n", this.nombre, this.nivel);
         }
         else {
-            this.experiencia += nivelEnemigo*10;
+            this.experiencia += expRecibida;
         }
         System.out.printf("Experiencia: %s de %s\n", this.experiencia, this.expMAX);
         System.out.printf("Encontraste %s monedas en el piso \n", monedaDelMuerto);
@@ -361,6 +355,14 @@ public class Personaje {
 
     public boolean getEsEnemigo(){
         return this.esEnemigo;
+    }
+
+    public Personaje getRival(){
+        return this.rival;
+    }
+
+    public void setRival(Personaje malulo){
+        this.rival = malulo;
     }
 
 }

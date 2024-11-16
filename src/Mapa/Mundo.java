@@ -155,6 +155,7 @@ public class Mundo {
                             break ;
                         case "K":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "T" + ANSI_RESET);
+                            break;
                         case "P":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "P" + ANSI_RESET);
                             break;
@@ -227,7 +228,6 @@ public class Mundo {
                 }
             } else if (matriz[columnaNueva][filaNueva].getNombre().equals("K")) {
                 matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
-
             }
         }
         return huboMovimiento;
