@@ -25,7 +25,6 @@ public class Mundo {
     }
 
     public void crearMundo(){
-        Random randomNumbers = new Random();
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 int valor = randomNumbers.nextInt(9)+1;
@@ -46,13 +45,13 @@ public class Mundo {
         Celda[][] matrizAux = this.matriz;
         for (int i = 1; i < this.y - 1; i++) {
             for (int j = 1; j < this.x - 1; j++) {
-                if(matrizAux[i][j].getNombre() == "T"){
-                    if((matrizAux[i-1][j].getNombre() == "A") &&
-                    (matrizAux[i+1][j].getNombre() == "A")){
+                if(Objects.equals(matrizAux[i][j].getNombre(), "T")){
+                    if((Objects.equals(matrizAux[i - 1][j].getNombre(), "A")) &&
+                    (Objects.equals(matrizAux[i + 1][j].getNombre(), "A"))){
                         matrizAux[i][j].setNombre("A");
                     }
-                    else if((matrizAux[i][j-1].getNombre() == "A") &&
-                            (matrizAux[i][j+1].getNombre() == "A")){
+                    else if((Objects.equals(matrizAux[i][j - 1].getNombre(), "A")) &&
+                            (Objects.equals(matrizAux[i][j + 1].getNombre(), "A"))){
                         matrizAux[i][j].setNombre("A");
                     }
                 }
@@ -61,9 +60,9 @@ public class Mundo {
         this.matriz = matrizAux;
         for (int i = 1; i < this.y-1; i++) {
             for (int j = 1; j < this.x-1; j++) {
-                if(matrizAux[i][j].getNombre() == "A"){
-                    if((matrizAux[i-1][j].getNombre() == "T")&&(matrizAux[i+1][j].getNombre() == "T")&&
-                            (matrizAux[i][j+1].getNombre() == "T")&&(matrizAux[i][j-1].getNombre() == "T")){
+                if(Objects.equals(matrizAux[i][j].getNombre(), "A")){
+                    if((Objects.equals(matrizAux[i - 1][j].getNombre(), "T"))&&(Objects.equals(matrizAux[i + 1][j].getNombre(), "T"))&&
+                            (Objects.equals(matrizAux[i][j + 1].getNombre(), "T"))&&(Objects.equals(matrizAux[i][j - 1].getNombre(), "T"))){
                         this.matriz[i][j].setNombre("T");
                     }
                 }
@@ -101,18 +100,16 @@ public class Mundo {
     }
 
     public void genMalulazos(int nivelJugador){
-
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(!Objects.equals(nuevo, "A") && (this.matriz[i][j].getPersonaje() == null)) {
-                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-1, nivelJugador+3);
+                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-1, nivelJugador+3); // Jugador: 1 - 0 → 4
                     Personaje malulo = new Personaje(genRaza(), 30,5,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
                         this.matriz[i][j].setNombre("MT");
-
                     }
                 }
             }
@@ -124,7 +121,6 @@ public class Mundo {
         for (int i = 0; i < 5; i++) {
             for (int j = (x/2)-3; j < (this.x/2)+4; j++) {
                 if(( j == x/2 && i == 2)) {
-
                     this.matriz[i][j].setPersonaje(profe);
                     this.matriz[i][j].setNombre("P");
                 }else {
@@ -151,7 +147,7 @@ public class Mundo {
                             System.out.print("\u001B[42m" + "\u001B[30m" + "O" + ANSI_RESET);
                             break;
                         case "MT":
-                            System.out.print("\u001B[42m" + "\u001B[30m" + "B" + ANSI_RESET);
+                            System.out.print("\u001B[42m" + "\u001B[30m" + "M" + ANSI_RESET);
                             break ;
                         case "K":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "T" + ANSI_RESET);
@@ -206,9 +202,7 @@ public class Mundo {
 
     private boolean moverPersonajeAux(int columnaNueva, int filaNueva, int columnaVieja, int filaVieja, Personaje jugador){
         boolean huboMovimiento = false;
-        System.out.println(columnaNueva);
-        System.out.println(filaNueva);
-        if (!(columnaNueva == y || filaNueva == x || columnaNueva == -1 || filaNueva == -1)){
+        if (!(columnaNueva == y || filaNueva == x || columnaNueva == -1 || filaNueva == -1)){ // Verifico que no me este moviendo a un borde
             if (matriz[columnaNueva][filaNueva].getNombre().equals("T")) {
                 matriz[columnaVieja][filaVieja].setNombre("T");
                 matriz[columnaNueva][filaNueva].setNombre("TP");
@@ -238,7 +232,6 @@ public class Mundo {
         this.matriz[jY][jX+3].setPersonaje(null);
         this.matriz[jY][jX+3].setTienda(tienda);
         this.matriz[jY][jX+3].setNombre("K");
-
     }
 
 }

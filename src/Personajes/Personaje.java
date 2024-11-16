@@ -17,12 +17,12 @@ public class Personaje {
     protected int salud;
     protected int saludMaxima;
     protected int experiencia;
-    protected int nivel;
     protected int expMAX;
+    protected int nivel;
     protected int esquiva;
     protected int pntosDefenza;
     protected float potenciador = 1;
-    protected Personaje rival;
+    protected Personaje rival; // Información del enemigo contra el que estoy peleando
     protected ArrayList<Habilidad> habilidades;
     protected ArrayList<Habilidad> habilidadesDeClase;
     protected ArrayList<Objeto> inventario;
@@ -118,11 +118,9 @@ public class Personaje {
     }
 
     public void habRandom(){
-
         int ataque = randomNumbers.nextInt(this.habilidades.size());
         System.out.printf("El %s utiliza %s\n", this.nombre, habilidades.get(ataque).getNombre());
         this.rival.recibirDanio(this.habilidades.get(ataque));
-
     }
 
 
@@ -224,7 +222,7 @@ public class Personaje {
             this.habilidades.add(habilidadesDeClase.get(2));
             System.out.printf("¡%s ha conseguido la habilidad '%s'!", this.nombre, this.habilidadesDeClase.get(2).getNombre());
         }
-        this.saludMaxima = salud + (this.nivel*2);
+        this.saludMaxima = saludMaxima + (this.nivel*2);
         this.salud = this.saludMaxima;
         this.setPntosDefenza(this.getPntosDefenza() + this.nivel/2);
         for (Habilidad habilidad : this.habilidades) {
@@ -346,7 +344,6 @@ public class Personaje {
 
     public int getSalud(){
         return this.salud;
-
     }
 
     public int getSaludMaxima(){

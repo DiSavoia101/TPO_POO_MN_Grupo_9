@@ -22,8 +22,8 @@ public class Controlador extends JFrame implements KeyListener {
     public int elegirClase(){
         System.out.println("Ingresa tu clase:");
         System.out.println("————————————————————————");
-        System.out.println("1 - Arquero");
-        System.out.println("2 - Escudero");
+        System.out.println("1 - Arquero"); // 1 → 0
+        System.out.println("2 - Escudero"); // 2 → 1
         System.out.println("3 - Guerrero");
         System.out.println("4 - Mago");
         System.out.println("————————————————————————");
