@@ -3,6 +3,7 @@ package Mapa;
 import Estructuras.Tienda;
 import Personajes.Personaje;
 
+import java.util.Objects;
 import java.util.Random;
 
 
@@ -14,7 +15,8 @@ public class Mundo {
     boolean existePersonaje;
     int jX;
     int jY;
-
+    Random randomNumbers = new Random();
+    boolean promocionado = false ;
 
     public Mundo(int x, int y){
         this.matriz = new Celda[y][x];
@@ -86,14 +88,26 @@ public class Mundo {
         this.existePersonaje = true;
     }
 
+    public String genRaza(){
+        int random = randomNumbers.nextInt( 0,3);
+        String raza = switch (random) {
+            case 0 -> "Bandido";
+            case 1 -> "Zombie";
+            case 2 -> "Esqueleto";
+            case 3 -> "Animal";
+            default -> "";
+        };
+        return raza;
+    }
+
     public void genMalulazos(int nivelJugador){
-        Random randomNumbers = new Random();
+
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
-                if(nuevo != "A" && (this.matriz[i][j].getPersonaje() == null)) {
-                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-3, nivelJugador+2);
-                    Personaje malulo = new Personaje("Bandido", 30,2,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
+                if(!Objects.equals(nuevo, "A") && (this.matriz[i][j].getPersonaje() == null)) {
+                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-1, nivelJugador+3);
+                    Personaje malulo = new Personaje(genRaza(), 30,5,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
@@ -103,8 +117,23 @@ public class Mundo {
                 }
             }
         }
+        genProfe();
     }
+    public void genProfe(){
+        Personaje profe = new Personaje("Profe", 500, 50,55,10 );
+        for (int i = 0; i < 5; i++) {
+            for (int j = (x/2)-3; j < (this.x/2)+4; j++) {
+                if(( j == x/2 && i == 2)) {
 
+                    this.matriz[i][j].setPersonaje(profe);
+                    this.matriz[i][j].setNombre("P");
+                }else {
+                    this.matriz[i][j].setNombre("T");
+                }
+            }
+        }
+
+    }
     public void mostrarMundo(){
         String ANSI_RESET = "\u001B[0m";
         if(existePersonaje) {
@@ -126,6 +155,9 @@ public class Mundo {
                             break ;
                         case "K":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "T" + ANSI_RESET);
+                        case "P":
+                            System.out.print("\u001B[42m" + "\u001B[30m" + "P" + ANSI_RESET);
+                            break;
                         default:
                     }
                 }
@@ -164,6 +196,9 @@ public class Mundo {
             if(!matriz[jY][jX].getPersonaje().isAlive()){
                 existePersonaje = false;
                 System.out.println("FIN DEL JUEGO");
+            }else if(this.promocionado){
+                existePersonaje = false;
+                System.out.println("Gansate nazi promocionaste");
             }
         }
     }
@@ -177,13 +212,17 @@ public class Mundo {
                 matriz[columnaVieja][filaVieja].setNombre("T");
                 matriz[columnaNueva][filaNueva].setNombre("TP");
                 huboMovimiento = true;
-
+            }else if ((matriz[columnaNueva][filaNueva].getNombre().equals("A"))){
+                huboMovimiento = false;
             } else if (matriz[columnaNueva][filaNueva].getNombre().equals("MT")) {
                 jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
                 if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()) {
                     matriz[columnaVieja][filaVieja].setNombre("T");
                     matriz[columnaNueva][filaNueva].setNombre("TP");
                     huboMovimiento = true;
+                    if (this.matriz[columnaNueva][filaNueva].getPersonaje().getNombre().equals("Profe")){
+                        this.promocionado  = true;
+                    }
                     jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
                 }
             } else if (matriz[columnaNueva][filaNueva].getNombre().equals("K")) {

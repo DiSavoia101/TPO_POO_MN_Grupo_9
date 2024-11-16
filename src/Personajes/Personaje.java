@@ -21,13 +21,15 @@ public class Personaje {
     protected int expMAX;
     protected int esquiva;
     protected int pntosDefenza;
+    protected float potenciador = 1;
     protected Personaje rival;
     protected ArrayList<Habilidad> habilidades;
     protected ArrayList<Habilidad> habilidadesDeClase;
     protected ArrayList<Objeto> inventario;
+    protected boolean esEnemigo;
     protected int monedas;
     Scanner lector = new Scanner(System.in);
-
+    Random randomNumbers = new Random();
 
     public Personaje(String nombre, String clase, int saludPj, int pntosDefenzaPj, int esquivaPj, int nivelPj){
         this.nombre = nombre;
@@ -40,6 +42,7 @@ public class Personaje {
         this.inventario = new ArrayList<Objeto>();
         this.nivel = nivelPj;
         this.monedas = 20;
+        this.esEnemigo = false;
         genHabilidades();
         nivelarPersonaje();
     }
@@ -48,20 +51,37 @@ public class Personaje {
         this.nombre = nombre;
         this.salud = saludPj;
         this.esquiva = esquivaPj;
+        this.esEnemigo = true;
         this.pntosDefenza = pntosDefenzaPj;
         this.habilidades = new ArrayList<Habilidad>();
         this.habilidadesDeClase = new ArrayList<Habilidad>();
         this.nivel = nivelPj;
-        genHabilidades();
-        nivelarPersonaje();
-    }
+        if (this.nombre.equals("Profe")) {
+            genHabProfe();
+        }else {
+            genHabilidades();
 
+            nivelarPersonaje();
+        }
+    }
+    public void genHabProfe(){
+        Habilidad hab1 = new Habilidad("Poner 2", 30, null);
+        Habilidad hab2 = new Habilidad("Poner 3.59", 400000000, "Depresion");
+        Habilidad hab3 = new Habilidad("Sancionado", 100, null);
+        Habilidad hab4 = new Habilidad("Trompada", 49, null);
+
+        this.habilidades.add(hab1);
+        this.habilidades.add(hab2);
+        this.habilidades.add(hab3);
+        this.habilidades.add(hab4);
+    }
     public Personaje(){}
 
     public void recibirDanio(Habilidad hab){
         //logica de tu defensa
         if (hab != null){
             int danio = hab.getDanio();
+            danio = (int) (danio*this.potenciador);
             if (danio > this.pntosDefenza) {
                 salud -= danio - this.pntosDefenza;
                 System.out.printf("%s recibió %s de daño\n", this.getNombre(), (danio - this.pntosDefenza));
@@ -77,7 +97,7 @@ public class Personaje {
             }
         }
         if (this.isAlive() && this.rival.isAlive()){
-            if (this.nombre.equals("Bandido")) {
+            if (this.esEnemigo) {
                 habRandom();
             } else {
                 menuPelea();
@@ -91,7 +111,7 @@ public class Personaje {
     }
 
     public void habRandom(){
-        Random randomNumbers = new Random();
+
         int ataque = randomNumbers.nextInt(this.habilidades.size());
         System.out.printf("El %s utiliza %s\n", this.nombre, habilidades.get(ataque).getNombre());
         this.rival.recibirDanio(this.habilidades.get(ataque));
@@ -223,18 +243,22 @@ public class Personaje {
         Habilidad hab3 = null;
         Habilidad hab4 = null;
 
-        if(this.nombre == "Bandido"){
-            Random randomNumbers = new Random();
+        if(this.esEnemigo){
+
             int claseRand = randomNumbers.nextInt(3)+1;
             switch (claseRand){
                 case 1:
                     this.clase = "Arquero";
+                    break;
                 case 2:
                     this.clase = "Escudero";
+                    break;
                 case 3:
                     this.clase = "Mago";
+                    break;
                 case 4:
                     this.clase = "Guerrero";
+                    break;
                 default:
             }
 
@@ -333,6 +357,10 @@ public class Personaje {
 
     public int getSaludMaxima(){
         return this.saludMaxima;
+    }
+
+    public boolean getEsEnemigo(){
+        return this.esEnemigo;
     }
 
 }
