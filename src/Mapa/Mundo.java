@@ -99,13 +99,12 @@ public class Mundo {
         return raza;
     }
 
-    public void genMalulazos(int nivelJugador){
+    public void genMalulazos(){
         for (int i = 0; i < this.y; i++) {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(!Objects.equals(nuevo, "A") && (this.matriz[i][j].getPersonaje() == null)) {
-                    int nivelEnemigo = randomNumbers.nextInt(nivelJugador-1, nivelJugador+3); // Jugador: 1 - 0 → 4
-                    Personaje malulo = new Personaje(genRaza(), 30,5,20,(nivelEnemigo <= 0 ? 1 : nivelEnemigo));
+                    Personaje malulo = new Personaje(genRaza(),30,5,1);
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
@@ -117,7 +116,7 @@ public class Mundo {
         genProfe();
     }
     public void genProfe(){
-        Personaje profe = new Personaje("Profe", 500, 50,55,10 );
+        Personaje profe = new Personaje("Profe", 500, 20,10 );
         for (int i = 0; i < 5; i++) {
             for (int j = (x/2)-3; j < (this.x/2)+4; j++) {
                 if(( j == x/2 && i == 2)) {
@@ -162,7 +161,7 @@ public class Mundo {
         }
     }
 
-    public void moverPersonaje(int dir) {
+    public void moverPersonaje(int dir) throws InterruptedException {
         if (this.existePersonaje){
             Personaje jugador = matriz[jY][jX].getPersonaje();
             matriz[jY][jX].setPersonaje(null);
@@ -195,39 +194,67 @@ public class Mundo {
                 System.out.println("FIN DEL JUEGO");
             }else if(this.promocionado){
                 existePersonaje = false;
-                System.out.println("Gansate nazi promocionaste");
+                String victoria = """
+                        El profesor cayó al suelo derrotado.
+                        Tu, imperturbable, sin límites, insuperable, te erguiste frente a él.
+                        Exigiste por última vez que te promocione, y el profesor, con su último aliento exclamó:
+                        Profe - P-pero... esta materia... no es promocionable... es con final obligatorio... *Muere*
+                        Tu - ¿Qué? ¿Final obligatorio? ¿Osea que todo esto fue para nada?
+                        Tras haber dejado ir su último hálito de vida, podias ver este flotando por el cielo,
+                        pero ante tus palabras retrocedió y volvió a introducirse en el cuerpo del profesor, dotando
+                        a este con vida otra vez.
+                        Profe - Efectivamente, fue todo al pedo, el final es mañana, y aunque yo me muera, habrá otro
+                        profesor... siempre hay más profesores... anda a estudiar. *Muere otra vez*
+                        Tu - ¡NOOOOOOOO!
+                        Y así concluyó la aventura. Ganaste, ¿pero a que costo?
+                        Gracias por jugar, de parte de todo el grupo 9.
+                        """;
+                System.out.println(victoria);
             }
         }
     }
 
-    private boolean moverPersonajeAux(int columnaNueva, int filaNueva, int columnaVieja, int filaVieja, Personaje jugador){
+    private boolean moverPersonajeAux(int columnaNueva, int filaNueva, int columnaVieja, int filaVieja, Personaje jugador) throws InterruptedException {
         boolean huboMovimiento = false;
         if (!(columnaNueva == y || filaNueva == x || columnaNueva == -1 || filaNueva == -1)){ // Verifico que no me este moviendo a un borde
-            if (matriz[columnaNueva][filaNueva].getNombre().equals("T")) {
-                matriz[columnaVieja][filaVieja].setNombre("T");
-                matriz[columnaNueva][filaNueva].setNombre("TP");
-                huboMovimiento = true;
-            }else if ((matriz[columnaNueva][filaNueva].getNombre().equals("A"))){
-                huboMovimiento = false;
-            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("MT")) {
-                jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
-                if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()) {
+            switch (matriz[columnaNueva][filaNueva].getNombre()) {
+                case "T" -> {
                     matriz[columnaVieja][filaVieja].setNombre("T");
                     matriz[columnaNueva][filaNueva].setNombre("TP");
                     huboMovimiento = true;
-                    if (this.matriz[columnaNueva][filaNueva].getPersonaje().getNombre().equals("Profe")){
-                        this.promocionado  = true;
-                    }
-                    jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
                 }
-            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("K")) {
-                matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
+                case "MT" -> {
+                    jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
+                    Thread.sleep(2500);
+                    if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()) {
+                        matriz[columnaVieja][filaVieja].setNombre("T");
+                        matriz[columnaNueva][filaNueva].setNombre("TP");
+                        huboMovimiento = true;
+                        jugador.recibirExp(this.matriz[columnaNueva][filaNueva].getPersonaje().getNivel());
+                    }
+                }
+                case "P" -> {
+                    String mensaje = "Profe - ¿Conque al fin has llegado eh?\n"+
+                            "Profe - Lo siento, pero nunca podrás obtener la promoción de mi.\n"+
+                            "Profe - Has hecho un daño irreparable, has DESTRUIDO a todos tus compañeros...\n"+
+                            "Profe - Pero aún así no puedo darte la promoción porque...\n"+
+                            "\nLa voz del profesor seguía sonando, pero a ti eso ya no te importaba.\n"+
+                            "Conseguirías esa promoción, aunque tuviera que ser por la fuerza.\n"+
+                            "\nProfe - ¿QUÉ ESTAS HACIENDO? NO PUEDES HACER ESTO.\n"+
+                            "Profe - Okay, tu te lo buscaste.";
+                    System.out.println(mensaje);
+                    jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
+                    if (jugador.isAlive()){
+                        promocionado = true;
+                    }
+                }
+                case "K" -> matriz[columnaNueva][filaNueva].getTienda().mostrarObjetos(jugador);
             }
         }
         return huboMovimiento;
     }
 
-    public void genTiendaDePrueba(){
+    public void genTienda(){
         Tienda tienda = new Tienda();
         this.matriz[jY][jX+3].setPersonaje(null);
         this.matriz[jY][jX+3].setTienda(tienda);

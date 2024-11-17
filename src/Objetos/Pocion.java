@@ -18,6 +18,7 @@ public class Pocion extends Objeto {
 
         if(this.curacion + saludActual > personaje.getSaludMaxima()){
             this.curacion = (this.curacion+saludActual) - personaje.getSaludMaxima();
+            System.out.printf("%s se ha usado %s y se ha curado %s puntos de vida", personaje.getNombre(), this.nombre, this.curacion);
         }
         personaje.curar(this.curacion);
     }
