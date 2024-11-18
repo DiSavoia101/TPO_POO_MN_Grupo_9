@@ -12,11 +12,11 @@ import static java.lang.Integer.parseInt;
 public class Personaje {
     protected String nombre;
     protected String clase;
-    protected String estado = " ";
+    protected String[] estado = new String[]{" ",  " "};
     protected int salud;
     protected int saludMaxima;
     protected int experiencia;
-    protected int dinero;
+
     protected int nivel;
     protected int expMAX;
     protected int esquiva;
@@ -65,10 +65,10 @@ public class Personaje {
         }
     }
     public void genHabProfe(){
-        Habilidad hab1 = new Habilidad("Poner 2", 30, null);
-        Habilidad hab2 = new Habilidad("Poner 3.59", 400000000, "Depresion");
-        Habilidad hab3 = new Habilidad("Sancionado", 100, null);
-        Habilidad hab4 = new Habilidad("Trompada", 49, null);
+        Habilidad hab1 = new Habilidad("Poner 2", 30, null,null);
+        Habilidad hab2 = new Habilidad("Poner 3.59", 400000000, "Depresion","Defensa-");
+        Habilidad hab3 = new Habilidad("Sancionado", 100, null,null);
+        Habilidad hab4 = new Habilidad("Trompada", 49, null,null);
 
         this.habilidades.add(hab1);
         this.habilidades.add(hab2);
@@ -86,25 +86,42 @@ public class Personaje {
                 salud -= danio - this.pntosDefenza;
                 System.out.printf("%s recibió %s de daño\n", this.getNombre(), (danio - this.pntosDefenza));
             }
-            if (Objects.equals(this.estado, " ")) {
+            if (Objects.equals(this.estado[0], " ")) {
                 if (hab.efecto != null) {
-                    this.estado = hab.getEfecto();
+                    this.estado[0] = hab.getEfecto();
+                    this.estado[1] = hab.getDescripcion();
                     System.out.printf("%s adquirió el estado: %s\n", this.getNombre(), hab.efecto);
                 }
-            } else {
+            } else if (Objects.equals(this.estado[1], "Danio")){
                 salud -= 3;
-                System.out.printf("%s recibio 3 de daño por veneno\n", this.getNombre());
+                System.out.printf("%s recibio 3 de daño por %s\n", this.getNombre(), this.estado[0]);
+            } else if (Objects.equals(this.estado[1], "Defensa-")) {
+                this.pntosDefenza -= 5;
+                System.out.printf("%s recibio -5 de defensa\n", this.getNombre());
             }
         }
         if (this.isAlive() && this.rival.isAlive()){
             if (this.esEnemigo) {
-                habRandom();
+                if(Objects.equals(this.estado[1], "Turno")){
+                    this.estado = new String[]{" ",  " "};
+                    this.rival.recibirDanio(null);
+                }else{
+                    habRandom();
+                }
             } else {
-                menuPelea();
+                if(Objects.equals(this.estado[1], "Turno")){
+                    this.estado = new String[]{" ",  " "};
+                    this.rival.recibirDanio(null);
+                }else{
+                    menuPelea();
+                }
+
             }
         }
         else {
             if (!this.isAlive()){
+                this.rival.estado =  new String[]{" ",  " "};
+
                 System.out.printf("%s ha muerto, el combate ha terminado\n", this.getNombre());
             }
         }
@@ -159,11 +176,11 @@ public class Personaje {
                 if(!inventario.isEmpty()){
                     mostrarInventario();
                 }else{
-                    System.out.println("Tenes el invetario vacio");
+                    System.out.println("Tenes el inventario vacio");
                 }
                 break;
             default:
-                System.out.println("le erraste");
+                System.out.println("Le erraste");
                 menuPelea();
                 break;
         }
@@ -172,20 +189,24 @@ public class Personaje {
 
     public void mostrarHab(){
         System.out.println("——————————————————————————————");
-        System.out.printf("Rival: %s, Salud: %s, Estado: %s, Su nivel es: %s\n", this.rival.getNombre(), this.rival.mostrarVida(),(this.rival.estado.isBlank() ? "Normal" : this.rival.estado), this.rival.getNivel());
+        System.out.printf("Rival: %s, Salud: %s, Estado: %s, Su nivel es: %s\n", this.rival.getNombre(), this.rival.mostrarVida(),(this.rival.estado[0].isBlank() ? "Normal" : this.rival.estado[0]), this.rival.getNivel());
         for(int i = 0; i < habilidades.size(); i++){
             System.out.println(i+1 + " - " + habilidades.get(i).getNombre());
         }
-        System.out.printf("Tu nombre: %s, Salud: %s, Estado: %s, Tu nivel es: %s\n", this.getNombre(), this.mostrarVida(),(this.estado.isBlank() ? "Normal" : this.estado), this.getNivel());
+        System.out.printf("Tu nombre: %s, Salud: %s, Estado: %s, Tu nivel es: %s\n", this.getNombre(), this.mostrarVida(),(this.estado[0].isBlank() ? "Normal" : this.estado[0]), this.getNivel());
         System.out.println("——————————————————————————————");
         System.out.println("¿Qué habilidad quieres usar? ");
         String opcion = this.lector.next();
         System.out.println("——————————————————————————————");
         if(parseInt(opcion) <= habilidades.size()){
             System.out.printf("%s utiliza %s\n", this.getNombre(), habilidades.get(parseInt(opcion)-1).getNombre());
+            if(Objects.equals(habilidades.get(parseInt(opcion) - 1).getDescripcion(), "Defensa+")){
+                this.pntosDefenza += 5;
+                this.rival.recibirDanio(null);
+            }else{
             this.rival.recibirDanio(habilidades.get(parseInt(opcion)-1));
-        }
-        else {
+            }
+        }else {
             System.out.println("Opción Incorrecta");
             mostrarHab();
         }
@@ -198,7 +219,7 @@ public class Personaje {
         System.out.println("Inventario");
         for(int i = 0; i < inventario.size(); i++){
             System.out.println(i+1 + " - " + inventario.get(i).getNombre());
-        } System.out.printf("Tu nombre: %s, Salud: %s, Estado: %s, Tu nivel es: %s\n", this.getNombre(), this.mostrarVida(),(this.estado.isBlank() ? "Normal" : this.estado), this.getNivel());
+        } System.out.printf("Tu nombre: %s, Salud: %s, Estado: %s, Tu nivel es: %s\n", this.getNombre(), this.mostrarVida(),(this.estado[0].isBlank() ? "Normal" : this.estado[0]), this.getNivel());
         System.out.println("——————————————————————————————");
         System.out.println("¿Que objeto quieres usar?");
         String opcion = this.lector.next();
@@ -216,7 +237,7 @@ public class Personaje {
     }
 
     public void nivelarPersonaje(){
-        if (this.nivel == 2){
+        if (this.nivel == 6){
             this.habilidades.add(habilidadesDeClase.getFirst());
             System.out.printf("¡%s ha conseguido la habilidad '%s'!", this.nombre, this.habilidadesDeClase.getFirst().getNombre());
         }
@@ -264,25 +285,26 @@ public class Personaje {
 
         }
         if (Objects.equals(this.clase, "Arquero")) {
-            hab1 = new Habilidad("Flechazo", 8, null);
-            hab2 = new Habilidad("Flecha Veneno", 6, "Envenenad@");
-            hab3 = new Habilidad("Lluvia de flechas", 12, null);
-            hab4 = new Habilidad("Evasion", 0, "Evasion");
+            hab1 = new Habilidad("Flechazo", 8, null,null);
+            hab2 = new Habilidad("Flecha Veneno", 6, "Envenenad@","Danio");
+            hab3 = new Habilidad("Lluvia de flechas", 12, null,null);
+            hab4 = new Habilidad("Evasion", 0, "Evasion",null);
         } else if (Objects.equals(this.clase, "Escudero")) {
-            hab1 = new Habilidad("Atacar", 9, null);
-            hab2 = new Habilidad("Empujar", 5, "Aturdido");
-            hab3 = new Habilidad("Fortalecer", 0, "Fortalecido");
-            hab4 = new Habilidad("Bloquear", 0 , "Bloqueado");
+            hab1 = new Habilidad("Atacar", 9, null,null);
+            hab2 = new Habilidad("Empujar", 5, "Aturdido","Turno");
+            hab3 = new Habilidad("Fortalecer", 0, "Fortalecido","Defensa+");
+            hab4 = new Habilidad("Bloquear", 0 , "Bloqueado","Turno");
+
         } else if (Objects.equals(this.clase, "Mago")) {
-            hab1 = new Habilidad("Bola de fuego", 7, "Quemadura");
-            hab2 = new Habilidad("Lanzallamas", 11, "Quemadura");
-            hab3 = new Habilidad("Dragon", 13, "Quemadura");
-            hab4 = new Habilidad("Muro de llamas", 0, "Bloqueado");
+            hab1 = new Habilidad("Bola de fuego", 7, "Quemadura","Danio");
+            hab2 = new Habilidad("Lanzallamas", 11, "Quemadura","Danio");
+            hab3 = new Habilidad("Dragon", 13, "Quemadura","Danio");
+            hab4 = new Habilidad("Muro de llamas", 0, "Bloqueado","Turno");
         } else if (Objects.equals(this.clase, "Guerrero")) {
-            hab1 = new Habilidad("Ataque", 8, null);
-            hab2 = new Habilidad("Ataque pesado", 11, null);
-            hab3 = new Habilidad("Corte profundo", 13, "Sangrado");
-            hab4 = new Habilidad("Gritar", 0, "Debilidad");
+            hab1 = new Habilidad("Ataque", 8, null,null);
+            hab2 = new Habilidad("Ataque pesado", 11, null,null);
+            hab3 = new Habilidad("Corte profundo", 13, "Sangrado","Danio");
+            hab4 = new Habilidad("Gritar", 0, "Debilidad","Defensa-");
         }
         this.habilidades.add(hab1);
         this.habilidadesDeClase.add(hab2);
@@ -297,7 +319,7 @@ public class Personaje {
         if (this.experiencia + expRecibida >= expMAX){
             this.experiencia = (this.experiencia + expRecibida - expMAX);
             this.nivel+=1;
-            this.expMAX += this.nivel * 10;
+            this.expMAX += this.nivel * 8;
             this.nivelarPersonaje();
             System.out.printf("¡%s ha subido a nivel %s!\n", this.nombre, this.nivel);
         }

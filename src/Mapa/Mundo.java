@@ -9,14 +9,14 @@ import java.util.Random;
 
 public class Mundo {
 
-    Celda[][] matriz;
-    int x;
-    int y;
-    boolean existePersonaje;
-    int jX;
-    int jY;
-    Random randomNumbers = new Random();
-    boolean promocionado = false ;
+    protected Celda[][] matriz;
+    protected int x;
+    protected int y;
+    protected boolean existePersonaje;
+    protected int jX;
+    protected int jY;
+    protected Random randomNumbers = new Random();
+    protected boolean promocionado = false ;
 
     public Mundo(int x, int y){
         this.matriz = new Celda[y][x];
@@ -46,13 +46,13 @@ public class Mundo {
         Celda[][] matrizAux = this.matriz;
         for (int i = 1; i < this.y - 1; i++) {
             for (int j = 1; j < this.x - 1; j++) {
-                if(matrizAux[i][j].getNombre() == "T"){
-                    if((matrizAux[i-1][j].getNombre() == "A") &&
-                    (matrizAux[i+1][j].getNombre() == "A")){
+                if(Objects.equals(matrizAux[i][j].getNombre(), "T")){
+                    if((Objects.equals(matrizAux[i - 1][j].getNombre(), "A")) &&
+                    (Objects.equals(matrizAux[i + 1][j].getNombre(), "A"))){
                         matrizAux[i][j].setNombre("A");
                     }
-                    else if((matrizAux[i][j-1].getNombre() == "A") &&
-                            (matrizAux[i][j+1].getNombre() == "A")){
+                    else if((Objects.equals(matrizAux[i][j - 1].getNombre(), "A")) &&
+                            (Objects.equals(matrizAux[i][j + 1].getNombre(), "A"))){
                         matrizAux[i][j].setNombre("A");
                     }
                 }
@@ -61,9 +61,9 @@ public class Mundo {
         this.matriz = matrizAux;
         for (int i = 1; i < this.y-1; i++) {
             for (int j = 1; j < this.x-1; j++) {
-                if(matrizAux[i][j].getNombre() == "A"){
-                    if((matrizAux[i-1][j].getNombre() == "T")&&(matrizAux[i+1][j].getNombre() == "T")&&
-                            (matrizAux[i][j+1].getNombre() == "T")&&(matrizAux[i][j-1].getNombre() == "T")){
+                if(Objects.equals(matrizAux[i][j].getNombre(), "A")){
+                    if((Objects.equals(matrizAux[i - 1][j].getNombre(), "T"))&&(Objects.equals(matrizAux[i + 1][j].getNombre(), "T"))&&
+                            (Objects.equals(matrizAux[i][j + 1].getNombre(), "T"))&&(Objects.equals(matrizAux[i][j - 1].getNombre(), "T"))){
                         this.matriz[i][j].setNombre("T");
                     }
                 }
@@ -120,7 +120,7 @@ public class Mundo {
         genProfe();
     }
     public void genProfe(){
-        Personaje profe = new Personaje("Profe", 500, 50,55,10 );
+        Personaje profe = new Personaje("Profe", 350, 35,55,10 );
         for (int i = 0; i < 5; i++) {
             for (int j = (x/2)-3; j < (this.x/2)+4; j++) {
                 if(( j == x/2 && i == 2)) {
@@ -155,6 +155,7 @@ public class Mundo {
                             break ;
                         case "K":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "T" + ANSI_RESET);
+                            break;
                         case "P":
                             System.out.print("\u001B[42m" + "\u001B[30m" + "P" + ANSI_RESET);
                             break;
@@ -198,7 +199,7 @@ public class Mundo {
                 System.out.println("FIN DEL JUEGO");
             }else if(this.promocionado){
                 existePersonaje = false;
-                System.out.println("Gansate nazi promocionaste");
+                System.out.println("GANASTE ");
             }
         }
     }
@@ -214,7 +215,7 @@ public class Mundo {
                 huboMovimiento = true;
             }else if ((matriz[columnaNueva][filaNueva].getNombre().equals("A"))){
                 huboMovimiento = false;
-            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("MT")) {
+            } else if (matriz[columnaNueva][filaNueva].getNombre().equals("MT") || matriz[columnaNueva][filaNueva].getNombre().equals("P")) {
                 jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
                 if (!this.matriz[columnaNueva][filaNueva].getPersonaje().isAlive()) {
                     matriz[columnaVieja][filaVieja].setNombre("T");
