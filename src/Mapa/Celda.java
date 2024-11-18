@@ -3,7 +3,7 @@ package Mapa;
 import Estructuras.Tienda;
 import Personajes.Personaje;
 
-public class Celda {
+public class    Celda {
     private String nombre;
     private Personaje personaje;
     private Tienda tienda;

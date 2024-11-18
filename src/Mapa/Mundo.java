@@ -9,14 +9,14 @@ import java.util.Random;
 
 public class Mundo {
 
-    Celda[][] matriz;
-    int x;
-    int y;
-    boolean existePersonaje;
-    int jX;
-    int jY;
-    Random randomNumbers = new Random();
-    boolean promocionado = false ;
+    private Celda[][] matriz;
+    private int x;
+    private int y;
+    private boolean existePersonaje;
+    private int jX;
+    private int jY;
+    private Random randomNumbers = new Random();
+    private boolean promocionado = false ;
 
     public Mundo(int x, int y){
         this.matriz = new Celda[y][x];
