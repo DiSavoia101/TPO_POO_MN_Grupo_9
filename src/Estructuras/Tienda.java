@@ -19,18 +19,20 @@ public class Tienda {
     Scanner lector = new Scanner(System.in);
 
     public Tienda() {
-        this.nombre = "Tienda DonJuan";
+        this.nombre = "Cafetería UADE";
         this.objetos = new ArrayList<>();
         generarObjetos();
     }
 
     public void generarObjetos() {
-        Objeto pocion15 = new Pocion(10,"Pocion pequeña","Cura 15 puntos de vida", 15);
-        Objeto pocion30 = new Pocion(20,"Pocion mediana","Cura 30 puntos de vida", 30);
-        Objeto armadura = new Armadura(35,"Pechera de cobre",20, "Aumenta 20 puntos de defenza");
+        Objeto pocion15 = new Pocion(10,"UADE Cola","Cura 15 puntos de vida", 15);
+        Objeto pocion30 = new Pocion(20,"Sanguche de milanga","Cura 30 puntos de vida", 30);
+        Objeto armadura5 = new Armadura(35,"Buzo de la UADE",5, "Aumenta 5 puntos de defenza");
+        Objeto armadura10 = new Armadura(50, "Lentes de Sol UADE", 10,"Aumenta 10 puntos de defenza");
         objetos.add(pocion15);
         objetos.add(pocion30);
-        objetos.add(armadura);
+        objetos.add(armadura5);
+        objetos.add(armadura10);
     }
 
     public void mostrarObjetos(Personaje cliente){
@@ -64,7 +66,9 @@ public class Tienda {
             if (cliente.getMonedas() >= venta.getValor()) {
                 cliente.RestarMonedas(venta.getValor());
                 cliente.agregarAlInventario(venta);
-                this.objetos.remove(venta);
+                if (parseInt(opcion)-1 >1 ){
+                    this.objetos.remove(venta);
+                }
                 System.out.printf("¡Has adquirido %s por %s monedas exitosamente!", venta.getNombre(), venta.getValor());
             }
             else {
