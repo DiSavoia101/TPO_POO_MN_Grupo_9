@@ -133,7 +133,6 @@ public class Personaje {
         this.rival.recibirDanio(this.habilidades.get(ataque));
     }
 
-
     public void pelear(Personaje malulo){
         this.rival = malulo;
         int nivelEnemigo = randomNumbers.nextInt(this.nivel-1, this.nivel+3);
@@ -204,8 +203,6 @@ public class Personaje {
             System.out.println("Opción Incorrecta");
             mostrarHab();
         }
-
-
     }
 
     public void mostrarInventario(){
