@@ -37,7 +37,7 @@ public class Tienda {
         objetos.add(armadura10);
     }
 
-    public void mostrarObjetos(Personaje cliente){
+    public void mostrarObjetos(Personaje cliente) throws InterruptedException {
         for (int i = 0; i < 20; i++){
             System.out.println("\n");
         }
@@ -59,7 +59,7 @@ public class Tienda {
         this.cliente = null;
     }
 
-    public void comprar(){
+    public void comprar() throws InterruptedException {
         Objeto venta = null;
         boolean aux = false;
         String opcion = this.lector.nextLine();
@@ -77,6 +77,7 @@ public class Tienda {
                 System.out.println("No tienes monedas suficientes");
             }
             mostrarObjetos(cliente);
+            Thread.sleep(2500);
         }
         if (parseInt(opcion)-1 == objetos.size()){
             System.out.println("Hasta luego, vuelva pronto");
