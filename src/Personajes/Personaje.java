@@ -139,7 +139,6 @@ public class Personaje {
         int nivelEnemigo = randomNumbers.nextInt(this.nivel-1, this.nivel+3);
         if (!Objects.equals(this.rival.getNombre(), "Profe")){
             this.rival.setNivel(nivelEnemigo <= 0 ? 1 : nivelEnemigo);
-            this.rival.genHabilidades();
             this.rival.nivelarPersonaje();
         }
 
@@ -171,7 +170,7 @@ public class Personaje {
                 if(!inventario.isEmpty()){
                     mostrarInventario();
                 }else{
-                    System.out.println("Tenes el invetario vacio");
+                    System.out.println("Tenes el inventario vacio");
                 }
                 break;
             default:
