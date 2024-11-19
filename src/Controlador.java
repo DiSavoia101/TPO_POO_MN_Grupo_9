@@ -89,7 +89,7 @@ public class Controlador extends JFrame implements KeyListener {
     public void iniciarJuego(){
         String nombre = menuInicio();
         String clase = ingresarClase();
-        Personaje jugador = new Personaje(nombre, clase, 60, 5,10);
+        Personaje jugador = new Personaje(nombre, clase, 80, 5,1);
         this.mapa.generarJugador(jugador);
         this.mapa.genMalulazos();
         this.mapa.genTienda();

@@ -27,10 +27,12 @@ public class Tienda {
     public void generarObjetos() {
         Objeto pocion15 = new Pocion(10,"UADE Cola","Cura 15 puntos de vida", 15);
         Objeto pocion30 = new Pocion(20,"Sanguche de milanga","Cura 30 puntos de vida", 30);
+        Objeto pocion60 = new Pocion(30, "Alfajor de chocolate", "Cura 60 puntos de vida", 60);
         Objeto armadura5 = new Armadura(35,"Buzo de la UADE",5, "Aumenta 5 puntos de defenza");
         Objeto armadura10 = new Armadura(50, "Lentes de Sol UADE", 10,"Aumenta 10 puntos de defenza");
         objetos.add(pocion15);
         objetos.add(pocion30);
+        objetos.add(pocion60);
         objetos.add(armadura5);
         objetos.add(armadura10);
     }
@@ -66,7 +68,7 @@ public class Tienda {
             if (cliente.getMonedas() >= venta.getValor()) {
                 cliente.RestarMonedas(venta.getValor());
                 cliente.agregarAlInventario(venta);
-                if (parseInt(opcion)-1 >1 ){
+                if (parseInt(opcion)-1 > 2){
                     this.objetos.remove(venta);
                 }
                 System.out.printf("¡Has adquirido %s por %s monedas exitosamente!", venta.getNombre(), venta.getValor());

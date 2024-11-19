@@ -199,15 +199,16 @@ public class Mundo {
                         El profesor cayó al suelo derrotado.
                         Tu, imperturbable, sin límites, insuperable, te erguiste frente a él.
                         Exigiste por última vez que te promocione, y el profesor, con su último aliento exclamó:
-                        Profe - P-pero... esta materia... no es promocionable... es con final obligatorio... *Muere*
-                        Tu - ¿Qué? ¿Final obligatorio? ¿Osea que todo esto fue para nada?
+                        Profe: P-pero... esta materia... no es promocionable... es con final obligatorio... *Muere*
+                        Tu: ¿Qué? ¿Final obligatorio? ¿Osea que todo esto fue para nada?
                         Tras haber dejado ir su último hálito de vida, podias ver este flotando por el cielo,
                         pero ante tus palabras retrocedió y volvió a introducirse en el cuerpo del profesor, dotando
                         a este con vida otra vez.
-                        Profe - Efectivamente, fue todo al pedo, el final es mañana, y aunque yo me muera, habrá otro
+                        Profe: Efectivamente, fue todo al pedo, el final es mañana, y aunque yo me muera, habrá otro
                         profesor... siempre hay más profesores... anda a estudiar. *Muere otra vez*
-                        Tu - ¡NOOOOOOOO!
-                        Y así concluyó la aventura. Ganaste, ¿pero a que costo?
+                        Tu: ¡NOOOOOOOO!
+                        Y así concluyó la aventura.
+                        Ganaste, ¿pero a que costo?
                         Gracias por jugar, de parte de todo el grupo 9.
                         """;
                 System.out.println(victoria);
@@ -235,15 +236,20 @@ public class Mundo {
                     }
                 }
                 case "P" -> {
-                    String mensaje = "Profe - ¿Conque al fin has llegado eh?\n"+
-                            "Profe - Lo siento, pero nunca podrás obtener la promoción de mi.\n"+
-                            "Profe - Has hecho un daño irreparable, has DESTRUIDO a todos tus compañeros...\n"+
-                            "Profe - Pero aún así no puedo darte la promoción porque...\n"+
-                            "\nLa voz del profesor seguía sonando, pero a ti eso ya no te importaba.\n"+
-                            "Conseguirías esa promoción, aunque tuviera que ser por la fuerza.\n"+
-                            "\nProfe - ¿QUÉ ESTAS HACIENDO? NO PUEDES HACER ESTO.\n"+
-                            "Profe - Okay, tu te lo buscaste.";
+                    String mensaje = """
+
+                            Profe: ¿Conque al fin has llegado eh?
+                            Profe: Lo siento, pero nunca podrás obtener la promoción de mi.
+                            Profe: Has hecho un daño irreparable, has DESTRUIDO a todos tus compañeros...
+                            Profe: Pero aún así no puedo darte la promoción porque...
+
+                            La voz del profesor seguía sonando, pero a ti eso ya no te importaba.
+                            Conseguirías esa promoción, aunque tuviera que ser por la fuerza.
+
+                            Profe: ¿QUÉ ESTAS HACIENDO? NO PUEDES HACER ESTO.
+                            Profe: Okay, tu te lo buscaste.""";
                     System.out.println(mensaje);
+                    Thread.sleep(5000);
                     jugador.pelear(this.matriz[columnaNueva][filaNueva].getPersonaje());
                     if (jugador.isAlive()){
                         promocionado = true;
