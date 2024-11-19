@@ -28,8 +28,8 @@ public class Tienda {
         Objeto pocion15 = new Pocion(10,"UADE Cola","Cura 15 puntos de vida", 15);
         Objeto pocion30 = new Pocion(20,"Sanguche de milanga","Cura 30 puntos de vida", 30);
         Objeto pocion60 = new Pocion(30, "Alfajor de chocolate", "Cura 60 puntos de vida", 60);
-        Objeto armadura5 = new Armadura(35,"Buzo de la UADE",5, "Aumenta 5 puntos de defenza");
-        Objeto armadura10 = new Armadura(50, "Lentes de Sol UADE", 10,"Aumenta 10 puntos de defenza");
+        Objeto armadura5 = new Armadura(35,"Buzo de la UADE",2, "Aumenta 2 puntos de defenza");
+        Objeto armadura10 = new Armadura(50, "Lentes de Sol UADE", 5,"Aumenta 5 puntos de defenza");
         objetos.add(pocion15);
         objetos.add(pocion30);
         objetos.add(pocion60);
@@ -76,8 +76,8 @@ public class Tienda {
             else {
                 System.out.println("No tienes monedas suficientes");
             }
-            mostrarObjetos(cliente);
             Thread.sleep(2500);
+            mostrarObjetos(cliente);
         }
         if (parseInt(opcion)-1 == objetos.size()){
             System.out.println("Hasta luego, vuelva pronto");

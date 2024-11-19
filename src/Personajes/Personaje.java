@@ -36,7 +36,7 @@ public class Personaje {
         this.salud = saludPj;
         this.saludMaxima = saludPj;
         this.pntosDefenza = pntosDefenzaPj;
-        this.potenciador = 1.25f;
+        this.potenciador = 1.20f;
         this.habilidades = new ArrayList<Habilidad>();
         this.habilidadesDeClase = new ArrayList<Habilidad>();
         this.inventario = new ArrayList<Objeto>();
@@ -130,7 +130,13 @@ public class Personaje {
     public void habRandom(){
         int ataque = randomNumbers.nextInt(this.habilidades.size());
         System.out.printf("El %s utiliza %s\n", this.nombre, habilidades.get(ataque).getNombre());
-        this.rival.recibirDanio(this.habilidades.get(ataque));
+        if (habilidades.get(ataque).getDescripcion().equals("Defensa+")){
+            System.out.printf("%s se fortaleció y aumentó en 2 su defensa", this.nombre);
+            this.pntosDefenza += 2;
+            this.rival.recibirDanio(null);
+        } else {
+            this.rival.recibirDanio(this.habilidades.get(ataque));
+        }
     }
 
     public void pelear(Personaje malulo){
@@ -193,7 +199,8 @@ public class Personaje {
         if(parseInt(opcion) <= habilidades.size()){
             System.out.printf("%s utiliza %s\n", this.getNombre(), habilidades.get(parseInt(opcion)-1).getNombre());
             if(Objects.equals(habilidades.get(parseInt(opcion) - 1).getDescripcion(), "Defensa+")){
-                this.pntosDefenza += 5;
+                System.out.printf("%s se fortaleció y aumentó en 2 su defensa", this.nombre);
+                this.pntosDefenza += 2;
                 this.rival.recibirDanio(null);
             }else{
             this.rival.recibirDanio(habilidades.get(parseInt(opcion)-1));

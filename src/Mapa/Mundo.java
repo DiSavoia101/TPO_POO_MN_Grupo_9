@@ -104,7 +104,7 @@ public class Mundo {
             for (int j = 0; j < this.x; j++) {
                 String nuevo = this.matriz[i][j].getNombre();
                 if(!Objects.equals(nuevo, "A") && (this.matriz[i][j].getPersonaje() == null)) {
-                    Personaje malulo = new Personaje(genRaza(),30,5,1);
+                    Personaje malulo = new Personaje(genRaza(),10,4,1);
                     int valor = randomNumbers.nextInt(10) + 1;
                     if (valor < 2) {
                         this.matriz[i][j].setPersonaje(malulo);
